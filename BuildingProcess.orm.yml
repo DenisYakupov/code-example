@@ -1,0 +1,67 @@
+App\Entity\BuildingProcess:
+    type: entity
+    table: null
+    repositoryClass: App\Repository\BuildingProcessRepository
+    manyToOne:
+        complex:
+            targetEntity: Complex
+            inversedBy: buildingProcesses
+            joinColumn:
+                name: complex_id
+                referencedColumnName: id
+            options:
+                label: Комплекс
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        guid:
+            type: guid
+            unique: true
+            nullable: false
+            options:
+                input: text
+                label: Uuidti
+        createdAt:
+            type: datetime
+            nullable: false
+            options:
+                input: datetime
+                label: Дата создания
+        updatedAt:
+            type: datetime
+            nullable: false
+            options:
+                input: datetime
+                label: Дата обновления
+        tostring:
+            type: string
+            nullable: false
+            length: 255
+        complex_id:
+            type: integer
+        date:
+            type: datetime
+            options:
+                label: Дата
+        fileList:
+            type: json_array
+            options:
+                handler: file_list
+                approach_ext: jpg, jpeg, png, bmp
+                label: Изображения
+        description:
+            type: string
+            length: 255
+            nullable: true
+            options:
+                label: Описание
+        _show:
+            type: boolean
+            nullable: true
+            options:
+                label: Показывать
+    lifecycleCallbacks: {  }
