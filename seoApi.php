@@ -12,39 +12,31 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SeoController extends FOSRestController
 {
-use ControllerTrait;
+    /**
+    * //     *  ApiDoc_(
+    * //     *  resource=true,
+    * //     *  Headers = seoparam,
+    * //     *  description="Проверка SEO шаблона",
+    * //     *  section="",
+    * //     *  authentication=true,
+    * //     *  parameters={"params": {"a": 2, "b": 2}, "template": "asa{{a}}sas"}
+    * //  * )
+    *
+    * @Post(path="/seo/params")
+    * @param Request $request
+    * @return \Symfony\Component\HttpFoundation\JsonResponse
+    */
+    public function renderSeoTemplateAction(Request $request)
+    {
+        $data = json_decode($request->getContent(), true);
 
-/**
-* @var \Twig_Environment
-*/
-private $environment;
+        /** @var \Twig_Environment $twig */
+        $twig = $this->container->get('twig');
 
-/**
-* //     *  ApiDoc_(
-* //     *  resource=true,
-* //     *  Headers = seoparam,
-* //     *  description="Проверка SEO шаблона",
-* //     *  section="",
-* //     *  authentication=true,
-* //     *  parameters={"params": {"a": 2, "b": 2}, "template": "asa{{a}}sas"}
-* //  * )
-*
-* @Post(path="/seo/params")
-* @param Request $request
-* @return \Symfony\Component\HttpFoundation\JsonResponse
-*/
-public function renderSeoTemplateAction(Request $request)
-{
+        $result = $twig->createTemplate($data['template'])->render($data['params']);
 
-$data = json_decode($request->getContent(), true);
-
-/** @var \Twig_Environment $twig */
-$twig = $this->container->get('twig');
-
-$result = $twig->createTemplate($data['template'])->render($data['params']);
-
-return new JsonResponse([
-'result' => $result
-]);
-}
+        return new JsonResponse([
+            'result' => $result
+        ]);
+    }
 }
